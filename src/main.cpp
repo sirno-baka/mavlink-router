@@ -310,8 +310,8 @@ static int parse_argv(int argc, char *argv[], Configuration &config)
             help(stderr);
             return -EINVAL;
         }
-
-        if (stat(base, &st) == -1 || !S_ISCHR(st.st_mode)) {
+        auto base_str = std::string(base);
+        if ((base_str.substr(0, 4) != "/dev") && (stat(base, &st) == -1 || !S_ISCHR(st.st_mode))) {
             UdpEndpointConfig opt_udp{};
             opt_udp.name = "CLI";
             opt_udp.mode = UdpEndpointConfig::Mode::Server;
